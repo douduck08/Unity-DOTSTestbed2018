@@ -38,6 +38,7 @@ public class UpdateChainDataSystem : JobComponentSystem {
 
     [BurstCompile]
     struct UpdateJob : IJobParallelFor {
+        public float time;
         public ComponentDataArray<ChainRoot> chainRoot;
         public FixedArrayArray<ChainData> chainDataArrayArray;
 
@@ -47,7 +48,7 @@ public class UpdateChainDataSystem : JobComponentSystem {
             for (int j = 0; j < 10; j++) {
                 var t = 1f * j / chainRoot[i].Length;
                 var chainData = chainDataArray[j];
-                chainData.LocalPosition = chainData.InitLocalPosition + localGravity * (t * t);
+                chainData.LocalPosition = chainData.InitLocalPosition + new float3 (math.cos (time + t), math.sin (time + t), 0);
                 chainDataArray[j] = chainData;
             }
         }
@@ -57,6 +58,7 @@ public class UpdateChainDataSystem : JobComponentSystem {
 
     protected override JobHandle OnUpdate (JobHandle inputDeps) {
         var job = new UpdateJob () {
+            time = Time.realtimeSinceStartup,
             chainRoot = componentGroup.chainRoot,
             chainDataArrayArray = componentGroup.chainDataArrayArray,
         };

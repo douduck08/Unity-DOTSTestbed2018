@@ -29,10 +29,9 @@ public class WaveChain : MonoBehaviour {
     void Update () {
         for (int i = 0; i < cubes.Length; i++) {
             var chain = chains[i];
-            var localGravity = chain[0].InverseTransformDirection (Vector3.down);
             for (int j = 1; j < depth; j++) {
                 var t = 1f * j / depth;
-                var pos = initPos[i][j] + localGravity * (t * t);
+                var pos = initPos[i][j] + new Vector3 (Mathf.Cos (Time.realtimeSinceStartup + t), Mathf.Sin (Time.realtimeSinceStartup + t));
                 chain[j].localPosition = pos;
             }
         }
