@@ -26,7 +26,8 @@ public struct ChainData {
     public float3 LocalPosition;
 }
 
-[UpdateAfter (typeof (TransformSystem))]
+// [UpdateAfter (typeof (TransformSystem))]
+[UpdateAfter (typeof (UnityEngine.Experimental.PlayerLoop.PreLateUpdate))]
 public class UpdateChainDataSystem : JobComponentSystem {
 
     struct ComponentGroup {
@@ -68,7 +69,7 @@ public class UpdateChainDataSystem : JobComponentSystem {
     }
 }
 
-[UpdateAfter (typeof (TransformSystem))]
+[UpdateAfter (typeof (UpdateChainDataSystem))]
 public class ApplyChainDataSystem : JobComponentSystem {
 
     struct ComponentGroup {
