@@ -20,9 +20,17 @@ public struct DynamicBoneRoot : IComponentData {
 [System.Serializable]
 public struct DynamicBoneParticle {
     public int parentIndex;
+    public int childCount;
+    public float3 initLocalPosition;
+    public quaternion initLocalRotation;
+
     public float3 position;
     public float3 prevPosition;
     public float3 positionDiff;
+
+    public float3 localPosition;
+    public quaternion localRotation;
+    public quaternion invertRotation;
 
     public float restLength;
     public float inert;
@@ -62,8 +70,7 @@ public class DynamicBonePreUpdateSystem : JobComponentSystem {
         var job = new UpdateJob () {
             dynamicBoneTransform = componentGroup.dynamicBoneTransform,
         };
-        var handle = job.Schedule (componentGroup.transformAccessArray);
-        handle.Complete ();
+        var handle = job.Schedule (componentGroup.transformAccessArray, inputDeps);
         return handle;
     }
 }
@@ -94,9 +101,14 @@ public class DynamicBoneUpdateSystem : JobComponentSystem {
             var rootParticle = dynamicBoneParticle[0];
             rootParticle.prevPosition = rootParticle.position;
             rootParticle.position = currentObjectPos;
+
+            quaternion rootRotation = transform.rotation;
+            quaternion deltaRot = math.mul (rootRotation, dynamicBone.rootInvertRotation);
+
+            rootParticle.localPosition = transform.localPosition;
+            rootParticle.invertRotation = math.inverse (rootRotation);
             dynamicBoneParticle[0] = rootParticle;
 
-            quaternion deltaRot = transform.rotation * dynamicBone.rootInvertRotation;
             for (int idx = 1; idx < dynamicBone.length; idx++) {
                 var particle = dynamicBoneParticle[idx];
                 var parentParticle = dynamicBoneParticle[particle.parentIndex];
@@ -123,6 +135,24 @@ public class DynamicBoneUpdateSystem : JobComponentSystem {
 
                 dynamicBoneParticle[idx] = particle;
             }
+
+            for (int idx = 1; idx < dynamicBone.length; idx++) {
+                var particle = dynamicBoneParticle[idx];
+                var parentParticle = dynamicBoneParticle[particle.parentIndex];
+
+                // do not modify bone orientation if has more then one child
+                if (parentParticle.childCount < 2) {
+                    parentParticle.localPosition = math.mul (parentParticle.invertRotation, particle.position - parentParticle.position);
+                    quaternion rot = Quaternion.FromToRotation (particle.initLocalPosition, parentParticle.localPosition); // Unity.Mathematics has no this method
+                    parentParticle.localRotation = math.mul (rot, parentParticle.initLocalRotation);
+                    particle.invertRotation = math.mul (math.inverse (math.mul (parentParticle.localRotation, particle.initLocalRotation)), math.mul (parentParticle.initLocalRotation, parentParticle.invertRotation));
+                } else {
+                    particle.invertRotation = math.mul (math.inverse (particle.initLocalRotation), parentParticle.invertRotation);
+                }
+
+                dynamicBoneParticle[idx] = particle;
+                dynamicBoneParticle[particle.parentIndex] = parentParticle;
+            }
         }
     }
 
@@ -133,8 +163,8 @@ public class DynamicBoneUpdateSystem : JobComponentSystem {
             dynamicBoneRoot = componentGroup.dynamicBoneRoot,
             dynamicBoneParticleArrayArray = componentGroup.dynamicBoneParticleArrayArray,
         };
-        var handle = job.Schedule (componentGroup.transformAccessArray);
-        handle.Complete ();
+        var handle = job.Schedule (componentGroup.transformAccessArray, inputDeps);
+        handle.Complete (); // becauce ofs the dependencies between DynamicBoneUpdateSystem and DynamicBoneApplyTransformSystem, not a good implementation
         return handle;
     }
 }
@@ -160,16 +190,8 @@ public class DynamicBoneApplyTransformSystem : JobComponentSystem {
 
             var dynamicBoneParticle = dynamicBoneParticleFromEntity[dynamicBoneTransform[i].owner];
             var particle = dynamicBoneParticle[dynamicBoneTransform[i].index];
-            var parentParticle = dynamicBoneParticle[particle.parentIndex];
-
-            // // if (pp.bone.childCount <= 1) {
-            // // do not modify bone orientation if has more then one child
-            // Vector3 v = transform.localPosition;
-            // Vector3 v2 = particle.position - particle.position;
-            // Quaternion rot = Quaternion.FromToRotation (v, pp.bone.InverseTransformDirection (v2));
-            // pp.bone.localRotation = rot * pp.bone.localRotation;
-            // // }
-            transform.position = particle.position;
+            transform.localPosition = particle.localPosition;
+            transform.localRotation = particle.localRotation;
         }
     }
 
@@ -180,8 +202,7 @@ public class DynamicBoneApplyTransformSystem : JobComponentSystem {
             dynamicBoneTransform = componentGroup.dynamicBoneTransform,
             dynamicBoneParticleFromEntity = GetFixedArrayFromEntity<DynamicBoneParticle> (true),
         };
-        var handle = job.Schedule (componentGroup.transformAccessArray);
-        handle.Complete ();
+        var handle = job.Schedule (componentGroup.transformAccessArray, inputDeps);
         return handle;
     }
 }
@@ -204,13 +225,19 @@ public class DynamicBoneWithDots : MonoBehaviour {
         //     ComponentType.FixedArray (typeof (DynamicBoneParticle), particles.Count)
         // );
 
-        // var entity = entityManager.CreateEntity (entityArchetype);
         var entity = bones[0].gameObject.AddComponent<GameObjectEntity> ().Entity;
         entityManager.AddComponentData (entity, new DynamicBoneRoot () {
             length = particles.Count,
                 rootInvertRotation = Quaternion.Inverse (root.rotation),
                 objectMove = new float3 (),
                 objectPrevPosition = root.position
+        });
+
+        entityManager.AddComponentData (entity, new DynamicBoneTransform () {
+            owner = entity,
+                index = 0,
+                initLocalPosition = bones[0].localPosition,
+                initLocalRotation = bones[0].localRotation,
         });
 
         entityManager.AddComponent (entity, ComponentType.FixedArray (typeof (DynamicBoneParticle), particles.Count));
@@ -237,7 +264,11 @@ public class DynamicBoneWithDots : MonoBehaviour {
     void AppendParticles (List<DynamicBoneParticle> particles, List<Transform> bones, Transform bone, int parentIndex) {
         var particle = new DynamicBoneParticle ();
         particle.parentIndex = parentIndex;
+        particle.childCount = bone.childCount;
+        particle.initLocalPosition = bone.localPosition;
+        particle.initLocalRotation = bone.localRotation;
         particle.position = particle.prevPosition = bone.position;
+        particle.localRotation = particle.initLocalRotation;
 
         if (parentIndex >= 0) {
             var diff = particle.position - particles[parentIndex].position;

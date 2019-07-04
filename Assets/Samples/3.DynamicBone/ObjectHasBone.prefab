@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 33493231392807232}
   - component: {fileID: 23518432056981170}
   m_Layer: 0
-  m_Name: Sphere (5)
+  m_Name: Bone (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -39,7 +39,7 @@ GameObject:
   - component: {fileID: 33361310101855266}
   - component: {fileID: 23860451585113670}
   m_Layer: 0
-  m_Name: Sphere (3)
+  m_Name: Bone (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -56,7 +56,7 @@ GameObject:
   - component: {fileID: 33349320079389076}
   - component: {fileID: 23930290883228094}
   m_Layer: 0
-  m_Name: Sphere (4)
+  m_Name: Bone (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -73,7 +73,7 @@ GameObject:
   - component: {fileID: 33033711382330218}
   - component: {fileID: 23831688934578840}
   m_Layer: 0
-  m_Name: Sphere (2)
+  m_Name: Bone (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -124,7 +124,7 @@ GameObject:
   - component: {fileID: 33001478947387832}
   - component: {fileID: 23968145138704196}
   m_Layer: 0
-  m_Name: Sphere (1)
+  m_Name: Bone (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -485,7 +485,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1279213542030332}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f42083890d2ce204d807dc3a71e6ee0f, type: 3}
   m_Name: 
@@ -497,7 +497,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1279213542030332}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 434ad3592a6640d44add42395e6bd9aa, type: 3}
   m_Name: 
