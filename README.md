@@ -14,19 +14,19 @@ Apply force and move 125000 cubes.
 * DOTS Update: 6.5 ms
 
 #### 2.Chain with wave
-![Gravity](https://github.com/douduck08/Unity-DOTSTestbed/blob/master/image/chain.png)
+![Chain](https://github.com/douduck08/Unity-DOTSTestbed/blob/master/image/chain.png)
 Update local position of 8100 chain of cubes, 10 nested objects in 1 chain, totally 81000 cubes.
 * MonoBehaviour Update: 22.3 ms
 * DOTS Update: 3.6 ms
 
 #### 3.Dynamic bone
-![Gravity](https://github.com/douduck08/Unity-DOTSTestbed/blob/master/image/dynamic_bone.png)
+![Dynamic bone](https://github.com/douduck08/Unity-DOTSTestbed/blob/master/image/dynamic_bone.png)
 Update 2500 simplified dynamic bones, 6 particles in 1 bone, totally 15000 particles.
 * MonoBehaviour Update: 15.0 ms
 * DOTS Update: 6.3 ms
 
 #### 4.Distance check
-![Gravity](https://github.com/douduck08/Unity-DOTSTestbed/blob/master/image/gravity.png)
+![Distance check](https://github.com/douduck08/Unity-DOTSTestbed/blob/master/image/distance_check.png)
 Test disabling update when objects out of distance.
 
 ### Ref
