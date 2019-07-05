@@ -1,4 +1,29 @@
-Unity version: 2019.1.9f2
+### The testbed of Unity DOTS
+Data-Oriented Technology Stack (DOTS) are Unity 2018 new features about multithread programming, include:
+* C# Job System
+* Entity Component System (ECS)
+* Burst compiler
+
+This project used Unity version: 2018.1.9f2
+
+### Samples
+#### 1.Gravity
+Apply force and move 125000 cubes.
+* MonoBehaviour Update: 72.1 ms
+* DOTS Update: 6.5 ms
+
+#### 2.Chain with wave
+Update local position of 8100 chain of cubes, 10 nested objects in 1 chain, totally 81000 cubes.
+* MonoBehaviour Update: 22.3 ms
+* DOTS Update: 3.6 ms
+
+#### 3.Dynamic bone
+Update 2500 simplified dynamic bones, 6 particles in 1 bone, totally 15000 particles.
+* MonoBehaviour Update: 15.0 ms
+* DOTS Update: 6.3 ms
+
+#### 4.Distance check
+Test disabling update when objects out of distance.
 
 ### Ref
 在 Entity 中儲存 Array

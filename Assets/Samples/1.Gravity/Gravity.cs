@@ -8,7 +8,7 @@ public class Gravity : MonoBehaviour {
     Vector3[] velocity;
 
     void Start () {
-        cubes = GetComponent<CubeGenerator> ().GetCubes ();
+        cubes = GetComponent<GridGenerator> ().GetTransforms ();
         velocity = new Vector3[cubes.Length];
     }
 

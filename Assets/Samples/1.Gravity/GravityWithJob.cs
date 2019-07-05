@@ -27,7 +27,7 @@ public class GravityWithJob : MonoBehaviour {
     }
 
     void Start () {
-        cubes = GetComponent<CubeGenerator> ().GetCubes ();
+        cubes = GetComponent<GridGenerator> ().GetTransforms ();
 
         transformsAccess = new TransformAccessArray (cubes);
         velocity = new NativeArray<float3> (cubes.Length, Allocator.Persistent);

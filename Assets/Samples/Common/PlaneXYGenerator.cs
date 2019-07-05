@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BoneObjectGenerator : MonoBehaviour {
+public class PlaneXYGenerator : MonoBehaviour {
 
     [System.Serializable]
     public struct IntVector2 { public int x, y; }
 
-    public GameObject boneObjectPrefab;
+    public GameObject sourcePrefab;
     public IntVector2 objectNumber;
     public Vector2 gridSize;
 
@@ -19,7 +19,7 @@ public class BoneObjectGenerator : MonoBehaviour {
     }
 
     void Generate () {
-        if (boneObjectPrefab == null) {
+        if (sourcePrefab == null) {
             return;
         }
 
@@ -27,7 +27,7 @@ public class BoneObjectGenerator : MonoBehaviour {
         var posOrigin = new Vector2 (gridSize.x * objectNumber.x, gridSize.y * objectNumber.y) * -0.5f;
         for (int x = 0; x < objectNumber.x; x++) {
             for (int y = 0; y < objectNumber.y; y++) {
-                var go = Instantiate<GameObject> (boneObjectPrefab, this.transform);
+                var go = Instantiate<GameObject> (sourcePrefab, this.transform);
                 var localPos = posOrigin + new Vector2 (gridSize.x * x, gridSize.y * y);
                 go.transform.localPosition = localPos;
                 objects[GetIndex (x, y)] = go.transform;
@@ -37,5 +37,9 @@ public class BoneObjectGenerator : MonoBehaviour {
 
     int GetIndex (int x, int y) {
         return x * objectNumber.y + y;
+    }
+
+    public Transform[] GetTransforms () {
+        return objects;
     }
 }

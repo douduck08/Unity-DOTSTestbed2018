@@ -58,7 +58,7 @@ public class GravityWithDots : MonoBehaviour {
     EntityManager entityManager;
 
     void Start () {
-        cubes = GetComponent<CubeGenerator> ().GetCubes ();
+        cubes = GetComponent<GridGenerator> ().GetTransforms ();
 
         entityManager = World.Active.GetExistingManager<EntityManager> ();
 

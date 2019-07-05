@@ -281,8 +281,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6596ed96ddf045f45b6fc61c05c3bb4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cubePrefab: {fileID: 1573111211641278, guid: 35cfaf44009854d4bbac795f7c21c938, type: 2}
-  cubeNumber:
+  sourcePrefab: {fileID: 1573111211641278, guid: 35cfaf44009854d4bbac795f7c21c938,
+    type: 2}
+  objectNumber:
     x: 50
     y: 50
     z: 50

@@ -11,7 +11,7 @@ public class WaveChain : MonoBehaviour {
     List<Vector3[]> initPos = new List<Vector3[]> ();
 
     void Start () {
-        cubes = GetComponent<SphereGenerator> ().GetCubes ();
+        cubes = GetComponent<SphereGenerator> ().GetTransforms ();
 
         depth = GetDepth (cubes[0]);
         for (int i = 0; i < cubes.Length; i++) {

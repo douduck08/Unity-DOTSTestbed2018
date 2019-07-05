@@ -116,7 +116,7 @@ public class WaveChainWithDots : MonoBehaviour {
     EntityArchetype entityArchetype;
 
     void Start () {
-        cubes = GetComponent<SphereGenerator> ().GetCubes ();
+        cubes = GetComponent<SphereGenerator> ().GetTransforms ();
         depth = GetDepth (cubes[0]);
 
         entityManager = World.Active.GetExistingManager<EntityManager> ();

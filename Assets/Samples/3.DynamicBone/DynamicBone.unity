@@ -218,7 +218,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6aa7121fd30b7474ca1df1b44d6541aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boneObjectPrefab: {fileID: 1279213542030332, guid: 91c197bec11b16c42993836fd9844e05,
+  sourcePrefab: {fileID: 1279213542030332, guid: 91c197bec11b16c42993836fd9844e05,
     type: 2}
   objectNumber:
     x: 50
