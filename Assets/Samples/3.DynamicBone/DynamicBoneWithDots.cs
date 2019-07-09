@@ -203,6 +203,7 @@ public class DynamicBoneApplyTransformSystem : JobComponentSystem {
             dynamicBoneParticleFromEntity = GetFixedArrayFromEntity<DynamicBoneParticle> (true),
         };
         var handle = job.Schedule (componentGroup.transformAccessArray, inputDeps);
+        handle.Complete (); // becauce ofs the dependencies between DynamicBoneUpdateSystem and DynamicBoneApplyTransformSystem, not a good implementation
         return handle;
     }
 }
