@@ -7,6 +7,7 @@ public class PlaneXYGenerator : MonoBehaviour {
     [System.Serializable]
     public struct IntVector2 { public int x, y; }
 
+    public bool spawnAsChildren;
     public GameObject sourcePrefab;
     public IntVector2 objectNumber;
     public Vector2 gridSize;
@@ -27,7 +28,7 @@ public class PlaneXYGenerator : MonoBehaviour {
         var posOrigin = new Vector2 (gridSize.x * objectNumber.x, gridSize.y * objectNumber.y) * -0.5f;
         for (int x = 0; x < objectNumber.x; x++) {
             for (int y = 0; y < objectNumber.y; y++) {
-                var go = Instantiate<GameObject> (sourcePrefab, this.transform);
+                var go = Instantiate<GameObject> (sourcePrefab, spawnAsChildren ? this.transform : null);
                 var localPos = posOrigin + new Vector2 (gridSize.x * x, gridSize.y * y);
                 go.transform.localPosition = localPos;
                 objects[GetIndex (x, y)] = go.transform;

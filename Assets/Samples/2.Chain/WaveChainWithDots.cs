@@ -125,6 +125,7 @@ public class WaveChainWithDots : MonoBehaviour {
             ComponentType.FixedArray (typeof (ChainData), depth)
         );
 
+        var time = Time.realtimeSinceStartup;
         for (int i = 0; i < cubes.Length; i++) {
             var entity = entityManager.CreateEntity (entityArchetype);
             entityManager.SetComponentData (entity, new ChainRoot () { Length = depth });
@@ -136,10 +137,12 @@ public class WaveChainWithDots : MonoBehaviour {
             }
 
             for (int j = 0; j < depth; j++) {
-                var subEntity = chain[j].gameObject.AddComponent<GameObjectEntity> ().Entity;
+                // var subEntity = chain[j].gameObject.AddComponent<GameObjectEntity> ().Entity;
+                var subEntity = GameObjectEntity.AddToEntityManager (entityManager, chain[j].gameObject); // faster initialization
                 entityManager.AddComponentData (subEntity, new Owner () { Value = entity, Index = j });
             }
         }
+        Debug.Log (Time.realtimeSinceStartup - time);
     }
 
     int GetDepth (Transform root) {

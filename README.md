@@ -36,3 +36,7 @@ Test disabling update when objects out of distance.
 
 他者 Entity 之 ComponentData 存取
   * 【Unity,ECS】他のEntityが持つComponentDataを追跡する - http://tsubakit1.hateblo.jp/entry/2018/12/02/000705
+
+ECS 底層運作分析
+  * Unity ECS 深入分析 - https://zhuanlan.zhihu.com/p/44851549 (Total 3 parts)
+  * Unity2018 ECS框架Entities源码解析 - https://zhuanlan.zhihu.com/p/57735011 (Total 4 parts)

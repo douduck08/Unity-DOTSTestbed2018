@@ -225,7 +225,8 @@ public class DynamicBoneWithDots : MonoBehaviour {
         //     ComponentType.FixedArray (typeof (DynamicBoneParticle), particles.Count)
         // );
 
-        var entity = bones[0].gameObject.AddComponent<GameObjectEntity> ().Entity;
+        // var entity = bones[0].gameObject.AddComponent<GameObjectEntity> ().Entity;
+        var entity = GameObjectEntity.AddToEntityManager (entityManager, bones[0].gameObject);
         entityManager.AddComponentData (entity, new DynamicBoneRoot () {
             length = particles.Count,
                 rootInvertRotation = Quaternion.Inverse (root.rotation),
@@ -247,7 +248,8 @@ public class DynamicBoneWithDots : MonoBehaviour {
         }
 
         for (int i = 1; i < particles.Count; i++) {
-            var boneEntity = bones[i].gameObject.AddComponent<GameObjectEntity> ().Entity;
+            // var boneEntity = bones[i].gameObject.AddComponent<GameObjectEntity> ().Entity;
+            var boneEntity = GameObjectEntity.AddToEntityManager (entityManager, bones[i].gameObject);
             entityManager.AddComponentData (boneEntity, new DynamicBoneTransform () {
                 owner = entity,
                     index = i,

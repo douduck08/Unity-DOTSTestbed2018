@@ -7,6 +7,7 @@ public class GridGenerator : MonoBehaviour {
     [System.Serializable]
     public struct IntVector3 { public int x, y, z; }
 
+    public bool spawnAsChildren;
     public GameObject sourcePrefab;
     public IntVector3 objectNumber;
     public Vector3 gridSize;
@@ -28,8 +29,7 @@ public class GridGenerator : MonoBehaviour {
         for (int x = 0; x < objectNumber.x; x++) {
             for (int y = 0; y < objectNumber.y; y++) {
                 for (int z = 0; z < objectNumber.z; z++) {
-                    // var go = Instantiate<GameObject> (cubePrefab, this.transform);
-                    var go = Instantiate<GameObject> (sourcePrefab);
+                    var go = Instantiate<GameObject> (sourcePrefab, spawnAsChildren ? this.transform : null);
                     go.transform.localPosition = posOrigin + new Vector3 (gridSize.x * x, gridSize.y * y, gridSize.z * z);
                     objects[GetIndex (x, y, z)] = go.transform;
                 }

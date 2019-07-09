@@ -221,8 +221,8 @@ MonoBehaviour:
   sourcePrefab: {fileID: 1279213542030332, guid: 91c197bec11b16c42993836fd9844e05,
     type: 2}
   objectNumber:
-    x: 50
-    y: 50
+    x: 100
+    y: 100
   gridSize: {x: 2, y: 2}
 --- !u!1 &2049330975
 GameObject:

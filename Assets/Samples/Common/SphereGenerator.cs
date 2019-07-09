@@ -7,6 +7,7 @@ public class SphereGenerator : MonoBehaviour {
     [System.Serializable]
     public struct IntVector2 { public int x, y; }
 
+    public bool spawnAsChildren;
     public GameObject sourcePrefab;
     public float radius;
     public IntVector2 segmentNumber;
@@ -29,7 +30,7 @@ public class SphereGenerator : MonoBehaviour {
         var halfPI = Mathf.PI / -2f;
         for (int x = 0; x < segmentNumber.x; x++) {
             for (int y = 0; y < segmentNumber.y; y++) {
-                var go = Instantiate<GameObject> (sourcePrefab, this.transform);
+                var go = Instantiate<GameObject> (sourcePrefab, spawnAsChildren ? this.transform : null);
                 var dx = degreeX * x;
                 var dy = halfPI + degreeY * y;
                 var dir = new Vector3 (Mathf.Cos (dx) * Mathf.Cos (dy), Mathf.Sin (dy), Mathf.Sin (dx) * Mathf.Cos (dy));
