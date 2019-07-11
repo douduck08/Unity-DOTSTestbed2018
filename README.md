@@ -23,7 +23,7 @@ Update local position of 8100 chain of cubes, 10 nested objects in 1 chain, tota
 ![Dynamic bone](https://github.com/douduck08/Unity-DOTSTestbed/blob/master/image/dynamic_bone.png)
 Update 2500 simplified dynamic bones, 6 particles in 1 bone, totally 15000 particles.
 * MonoBehaviour Update: 15.0 ms
-* DOTS Update: 6.3 ms
+* DOTS Update: 1.3 ms
 
 #### 4.Distance check
 ![Distance check](https://github.com/douduck08/Unity-DOTSTestbed/blob/master/image/distance_check.png)

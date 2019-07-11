@@ -12,6 +12,8 @@ using Unity.Transforms;
 [System.Serializable]
 public struct PlaneWaveTag : IComponentData { }
 
+public class WavePlaneBarrier : BarrierSystem { }
+
 [UpdateAfter (typeof (CopyTransformFromGameObjectSystem))]
 [UpdateBefore (typeof (CopyTransformToGameObjectSystem))]
 public class WavePlaneSystem : JobComponentSystem {
@@ -36,6 +38,7 @@ public class WavePlaneSystem : JobComponentSystem {
     // }
 
     // [Inject] PlaneWaveTagGroup planeWaveTagGroup;
+    [Inject] WavePlaneBarrier barrier;
 
     protected override void OnCreateManager (int capacity) {
         transformGroup = GetComponentGroup (ComponentType.Create<Transform> (), ComponentType.ReadOnly<PlaneWaveTag> ());
@@ -62,6 +65,7 @@ public class WavePlaneSystem : JobComponentSystem {
             };
             inputDeps = job.Schedule (positionGroup.CalculateLength (), 64, inputDeps);
         }
+
         return inputDeps;
     }
 
@@ -107,19 +111,35 @@ public class WavePlaneWithDots : MonoBehaviour {
 
     public bool useTransformJob = true;
     EntityManager entityManager;
+    Entity entity;
 
     void Start () {
         WavePlaneSystem.useTransformJob = useTransformJob;
         entityManager = World.Active.GetExistingManager<EntityManager> ();
 
         // var entity = gameObject.AddComponent<GameObjectEntity> ().Entity;
-        var entity = GameObjectEntity.AddToEntityManager (entityManager, gameObject);
-        entityManager.AddComponentData (entity, new PlaneWaveTag ());
+        entity = GameObjectEntity.AddToEntityManager (entityManager, gameObject);
+        entityManager.AddComponent (entity, typeof (PlaneWaveTag));
 
         if (!WavePlaneSystem.useTransformJob) {
             entityManager.AddComponent (entity, typeof (Position));
             entityManager.AddComponent (entity, typeof (CopyTransformFromGameObject));
             entityManager.AddComponent (entity, typeof (CopyTransformToGameObject));
         }
+    }
+
+    void OnEnable () {
+        if (entityManager != null && entityManager.IsCreated) {
+            entityManager.AddComponent (entity, typeof (PlaneWaveTag));
+        }
+    }
+
+    void OnDisable () {
+        if (entityManager != null && entityManager.IsCreated) {
+            entityManager.RemoveComponent (entity, typeof (PlaneWaveTag));
+        }
+        var pos = transform.position;
+        pos.y = 0;
+        transform.position = pos;
     }
 }
