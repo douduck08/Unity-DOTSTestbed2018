@@ -12,8 +12,6 @@ using Unity.Transforms;
 [System.Serializable]
 public struct PlaneWaveTag : IComponentData { }
 
-public class WavePlaneBarrier : BarrierSystem { }
-
 [UpdateAfter (typeof (CopyTransformFromGameObjectSystem))]
 [UpdateBefore (typeof (CopyTransformToGameObjectSystem))]
 public class WavePlaneSystem : JobComponentSystem {
@@ -36,9 +34,7 @@ public class WavePlaneSystem : JobComponentSystem {
     //     [ReadOnly] public ComponentDataArray<PlaneWaveTag> planeWaveTag;
     //     public TransformAccessArray transformsAccess;
     // }
-
     // [Inject] PlaneWaveTagGroup planeWaveTagGroup;
-    [Inject] WavePlaneBarrier barrier;
 
     protected override void OnCreateManager (int capacity) {
         transformGroup = GetComponentGroup (ComponentType.Create<Transform> (), ComponentType.ReadOnly<PlaneWaveTag> ());
